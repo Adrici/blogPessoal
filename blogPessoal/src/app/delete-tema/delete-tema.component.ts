@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Tema } from '../model/Tema';
+import { AlertasService } from '../service/alertas.service';
 import { TemaService } from '../service/tema.service';
 
 @Component({
@@ -16,6 +17,7 @@ export class DeleteTemaComponent implements OnInit {
     private temaService: TemaService,
     private router: Router,
     private route: ActivatedRoute,
+    private alert: AlertasService
 
   ) { }
 
@@ -34,12 +36,12 @@ export class DeleteTemaComponent implements OnInit {
 
   btnSim() {
     if (this.tema.postagem.length != 0) {
-      alert('Esse tema não pode ser modificado, pois já pertence a uma postagem.')
+      this.alert.showAlertDanger('Esse tema não pode ser modificado, pois já pertence a uma postagem.')
       this.router.navigate(['/cadastro-tema'])
     } else {
       this.temaService.deleteTema(this.tema.id).subscribe(() => {
         this.router.navigate(['/cadastro-tema'])
-        alert('Tema apagado com sucesso!')
+        this.alert.showAlertSuccess('Tema apagado com sucesso!')
       })
     }
 
